@@ -27,9 +27,21 @@ const adbDevices = () => {
         });
 
     });
+}
 
+const adbConnect = (ip_address) => {
+    return new Promise((resolve, reject) => {
+        let child = shell.exec("adb connect " + ip_address, { async: true });
 
+        child.stdout.on('data', function (data) {
+            // check if data does not contain data
+            if (!data) reject(new Error("Data Undefined"));
 
+            // resolve if it does
+            resolve(data);
+        });
+
+    });
 }
 
 const x = async () => {

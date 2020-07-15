@@ -1,101 +1,88 @@
 const shell = require('shelljs');
 const fs = require('fs');
 const path = require('path');
+const { raw } = require('express');
+const { stringify } = require('querystring');
+const RE_removeTrailingSpaces = /^[\s]*(.*?)[\s]*$/; // regex to remove trail spaces
 
 
 // Execute a shell command returns STDOUT as promise
-const sendCommand = (cmd) => {
-    return new Promise((resolve, reject) => {
-        let child = shell.exec(cmd, { async: true });
-
-        child.stdout.on('data', function (data) {
-            // check if data does not contain data
-            if (!data) reject(new Error("Data Undefined"));
-
-            // resolve if it does
-            resolve(data);
-        })
+const exec = (cmd, cb) => {
+    let child = shell.exec(cmd, { async: true });
+    child.stdout.on('data', function (data) {
+        /* ... do something with data on callback ... */
+        cb(data);
     });
 }
 
 // Execute an adb shell command for all device connected
 const adbShell = (cmd, cb) => {
 
-    // return new Promise((resolve, reject) => {
-    //     let child = shell.exec(`adb shell ${cmd}`, { async: true });
-
-    //     child.stdout.on('data', function (data) {
-    //         // check if data does not contain data
-    //         if (!data) reject(new Error("Data Undefined"));
-
-    //         // resolve if it does
-    //         resolve(data);
-    //     })
-    // });
-
     let child = shell.exec(`adb shell ${cmd}`, { async: true });
     child.stdout.on('data', function (data) {
-        /* ... do something with data ... */
+        /* ... do something with data on callback ... */
         cb(data);
     });
 }
 
 // Execute an adb shell command for a specific IP provided
-const adbShellWithIP = (ip, cmd) => {
+const adbShellWithIP = (ip, cmd, cb) => {
 
-    return new Promise((resolve, reject) => {
-        let child = shell.exec(`adb shell -s ${ip} ${cmd}`, { async: true });
-
-        child.stdout.on('data', function (data) {
-            // check if data does not contain data
-            if (!data) reject(new Error("Data Undefined"));
-
-            // resolve if it does
-            resolve(data);
-        })
+    let child = shell.exec(`adb -s ${ip} shell ${cmd}`, { async: true });
+    child.stdout.on('data', function (data) {
+        /* ... do something with data on callback ... */
+        cb(data);
     });
+
 }
 
 // Check all devices connected
 const adbDevices = () => {
-    return new Promise((resolve, reject) => {
-        let child = shell.exec("adb devices", { async: true });
 
-        child.stdout.on('data', function (data) {
-            // check if data does not contain data
-            if (!data) reject(new Error("Data Undefined"));
+    let child = shell.exec("adb devices", { async: true });
 
-            // resolve if it does
-            resolve(data);
-        });
-
+    child.stdout.on('data', function (data) {
+        /* ... do something with data on callback ... */
+        cb(data);
     });
 }
 
 // Connect a device via IP
-const adbConnect = (ip_address) => {
-    return new Promise((resolve, reject) => {
-        let child = shell.exec("adb connect " + ip_address, { async: true });
+const adbConnect = (ip_address, cb) => {
 
-        child.stdout.on('data', function (data) {
-            // check if data does not contain data
-            if (!data) reject(new Error("Data Undefined"));
+    let child = shell.exec("adb connect " + ip_address, { async: true });
 
-            // resolve if it does
-            resolve(data);
-        });
-
+    child.stdout.on('data', function (data) {
+        /* ... do something with data on callback ... */
+        cb(data);
     });
 }
 
+// return the serial number of the TV as String
+const getSerialNumber = (ip, cb) => {
+    adbShellWithIP(ip, "getprop | grep -E 'ro.boot.serialno'", (data) => {
+        let rawFileName = data.split(":")[1];
+        let fileName = rawFileName.replace(RE_removeTrailingSpaces, '$1');
+        // ppush the serial number into callback
+        cb(fileName.slice(1, -1));
+    });
+}
 
-// if Im doing this then there is no STD out so I can't do anything with the DATA
-// works even without calling the callback
-adbShell("getprop | grep -E 'ro.boot.serialno' > Reports/asd.txt");
+// returns all PKGs installed as an Array
+const getPackageList = (ip, cb) => {
+    // this adb command will only return the PKGs and not the apk location
+    adbShellWithIP(ip, "'pm list packages -f' | sed -e 's/.*=//' | sort", (data) => {
+        let pkgList = data.split("\n");
+        // push the array into a callback
+        cb(pkgList);
+    });
+}
 
-// this will work
-// adbShell("getprop | grep -E 'ro.boot.serialno'", (data) => {
-//     console.log("asd" + data);
-// });
-
-// TODO: make all shell command callback again
+// returns the version number of the specified PKG
+const getVerionNameFromPKG = (ip, pkg, cb) => {
+    adbShellWithIP(ip, `dumpsys package ${pkg} | grep versionName`, (data) => {
+        let rawVersionName = data.split("\n")[0];
+        let versionName = rawVersionName.replace(RE_removeTrailingSpaces, '$1');
+        cb(versionName);
+    });
+}

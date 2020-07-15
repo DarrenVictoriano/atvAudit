@@ -8,10 +8,6 @@ const TVInfoSchema = new Schema({
         type: String,
         required: true
     },
-    ip_address: {
-        type: String,
-        required: false
-    },
     apps_info: [{
         type: Schema.Types.ObjectId,
         ref: 'AppsInfo'

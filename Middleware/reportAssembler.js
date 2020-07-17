@@ -7,6 +7,8 @@ const RE_versionName = /versionName=.*/; // regex to get versionName
 // First run getPKGandVersion so that it creates the PKGandVer.txt file
 // Probably use a timeout for the delay
 
+// TODO: make this into a function, then export it as default
+
 fs.readFile('Reports/PKGandVER.txt', 'utf8', function (err, data) {
     if (err) {
         return console.log(err);

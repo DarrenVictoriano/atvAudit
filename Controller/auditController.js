@@ -6,12 +6,12 @@ const timeoutTime = 3000;
 module.exports = {
     showConnectedDevices: (req, res) => {
         cmd.adbDevices((STDOUT) => {
-            res.status(400).json(STDOUT);
+            res.status(400).send(STDOUT);
         });
     },
     connectAdbDevice: (req, res) => {
         cmd.adbConnect(req.body.ip, (STDOUT) => {
-            res.status(400).json(STDOUT);
+            res.status(400).send(STDOUT);
         });
     },
     startAudit: (req, res) => {
@@ -48,6 +48,7 @@ module.exports = {
 
                             // now we done, i need a flag to let react know
                             // so it can grab the new data from that report we just saved.
+                            res.status(400).json({ 'success': true });
                         } else {
                             // if the database/json exists then we need to compare
                             // the old version of each PKG to the new version
@@ -82,6 +83,7 @@ module.exports = {
 
                             // now we done again, i need a flag to let react know
                             // so it can grab the new data from that report we just saved.
+                            res.status(400).json({ 'success': true });
                         }
                     });
                 });

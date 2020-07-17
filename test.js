@@ -10,10 +10,11 @@ const { getSerialNumber } = require('./Middleware/shellCmd');
 const IP = '192.168.0.17';
 
 // cmd.generateRawReport(IP, (dataPath) => {
-//     console.log(dataPath);
+//     console.log("Generate Data Done!");
 // });
 
 setTimeout(function () {
+    // this module requires the generateRawReport() to run first
     getSerialNumber(IP, (serialNumber) => {
         cleanThenReadRawReport(rawReport, (currentData) => {
             let latestPackageList = currentData.packageList;
@@ -25,17 +26,6 @@ setTimeout(function () {
                     // save currentData as dataFromDB
                     saveReportToJSON(currentData, serialNumber);
                 } else {
-                    // let oldData = dataFromDB[latestPackageList[0]];
-                    // let newData = currentData[latestPackageList[0]];
-                    // console.log(oldData.versionName);
-                    // console.log(newData.versionName);
-                    // console.log(oldData.versionName === newData.versionName);
-                    // if (oldData.versionName === newData.versionName) {
-                    //     newData.updated = false;
-                    // } else {
-                    //     newData.updated = true
-                    // }
-                    // console.log(newData);
                     // comapre old vs new then save as new DB
                     for (i in latestPackageList) {
                         let oldData = dataFromDB[latestPackageList[i]];
@@ -44,16 +34,18 @@ setTimeout(function () {
                         // check if this package exists in the old DB
                         if (!oldData) {
                             // if not mark as updated
-                            // by default updated is true so we dont have to do anything
-                        }
-
-                        // if versionName is the same then there is no update
-                        if (oldData.versionName === newData.versionName) {
-                            newData.updated = false;
-
+                            // by default updated is set to true so basically we dont have to do anything
+                            // this is just a place holder in case I want to flag the newly installed app in the future
+                            console.log("new pkg alert!");
                         } else {
-                            // set versionName is different then set updated to true
-                            newData.updated = true
+                            // if versionName is the same then there is no update
+                            if (oldData.versionName === newData.versionName) {
+                                newData.updated = false;
+
+                            } else {
+                                // set versionName is different then set updated to true
+                                newData.updated = true
+                            }
                         }
                     }
 

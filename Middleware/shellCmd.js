@@ -1,10 +1,8 @@
 const shell = require('shelljs');
-const { request } = require('express');
-const { get } = require('mongoose');
 const RE_removeTrailingSpaces = /^[\s]*(.*?)[\s]*$/; // regex to remove trail spaces
 const RE_pkg = /(?<=\[).* (?=\])/; // reges to get PKG
 const RE_versionName = /versionName=.*/; // regex to get versionName
-
+const rawReportPath = 'Reports/rawReport.txt';
 
 const exec = (cmd, cb) => {
     // Execute a shell command
@@ -93,18 +91,12 @@ module.exports = {
             cb(versionName);
         });
     },
-    getPKGandVersion: (ip, cb) => {
+    generateRawReport: (ip, cb) => {
         // Get the PKG and Version Name
         // returns the version number as string via callback
 
-        adbShellWithIP(ip, "dumpsys package packages | grep -E 'Package \\[|versionName'", (data) => {
-            // first get rid of the trailing lines
-            let removeTraillingSpaces = data.replace(RE_removeTrailingSpaces, '$1');
-
-            // regex for versionName = versionName=.*
-            let getVersion = data.replace(RE_versionName, '$1');
-            // regex for PKG (?<=\[).*(?=\])
-            cb(getVersion);
+        adbShellWithIP(ip, `dumpsys package packages | grep -E 'Package \\[|versionName' > ${rawReportPath}`, (data) => {
+            cb(rawReportPath);
         });
     }
 }

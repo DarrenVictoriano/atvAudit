@@ -48,7 +48,7 @@ module.exports = {
 
                             // now we done, i need a flag to let react know
                             // so it can grab the new data from that report we just saved.
-                            res.status(400).json({ 'success': true });
+                            res.status(400).json({ 'SN': SN, "currentData": currentData });
                         } else {
                             // if the database/json exists then we need to compare
                             // the old version of each PKG to the new version
@@ -83,7 +83,7 @@ module.exports = {
 
                             // now we done again, i need a flag to let react know
                             // so it can grab the new data from that report we just saved.
-                            res.status(400).json({ 'success': true });
+                            res.status(400).json({ 'SN': SN, "currentData": currentData });
                         }
                     });
                 });

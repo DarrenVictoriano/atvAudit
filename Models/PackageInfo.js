@@ -10,15 +10,8 @@ const PackageInfoSchema = new Schema({
     version: {
         type: String,
         required: true
-    },
-    version_name: {
-        type: String,
-        required: true
-    },
-    updated: {
-        type: Boolean,
-        required: true
     }
+
 });
 
 let PackageInfo = mongoose.model("PackageInfo", PackageInfoSchema);

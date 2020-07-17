@@ -7,10 +7,14 @@ const AppsInfoSchema = new Schema({
         type: String,
         required: true
     },
-    pkg_info: [{
-        type: Schema.Types.ObjectId,
-        ref: 'PackageInfo'
-    }]
+    version_name: {
+        type: String,
+        required: true
+    },
+    updated: {
+        type: Boolean,
+        required: true
+    }
 });
 
 let AppsInfo = mongoose.model("AppsInfo", AppsInfoSchema);

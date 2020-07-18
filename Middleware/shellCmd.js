@@ -1,8 +1,11 @@
+// Initialize dotenv
+require('dotenv').config();
 const shell = require('shelljs');
 const RE_removeTrailingSpaces = /^[\s]*(.*?)[\s]*$/; // regex to remove trail spaces
 const RE_pkg = /(?<=\[).* (?=\])/; // reges to get PKG
 const RE_versionName = /versionName=.*/; // regex to get versionName
-const rawReportPath = 'Reports/rawReport.txt';
+const REPORT_PATH = process.env.REPORTS_PATH;
+// REPORTS_PATH = "Reports/";
 
 const exec = (cmd, cb) => {
     // Execute a shell command
@@ -91,18 +94,12 @@ module.exports = {
             cb(versionName);
         });
     },
-    generateRawReport: (ip, cb) => {
+    generateRawReport: (ip, fileName, cb) => {
         // Get the PKG and Version Name
         // returns the version number as string via callback
 
-        adbShellWithIP(ip, `dumpsys package packages | grep -E 'Package \\[|versionName' > ${rawReportPath}`, (data) => {
-            cb(rawReportPath);
+        adbShellWithIP(ip, `dumpsys package packages | grep -E 'Package \\[|versionName' > ${REPORT_PATH}${fileName}-RAW.txt`, (data) => {
+            cb(fileName + ".txt");
         });
     }
 }
-
-// TODO: for PKG list and VersionName
-// I may need to save the STDOUT into a file and then create an array from there
-// Should probably handle it with a timeout
-
-// (?<pkg><=\[).*(?=\])

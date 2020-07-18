@@ -1,7 +1,8 @@
 const fs = require('fs');
 const RE_removeTrailingSpaces = /^[\s]*(.*?)[\s]*$/; // regex to remove trail spaces
 const RE_pkg = /(?<=\[).*(?=\])/; // reges to get PKG
-const RE_versionName = /versionName=.*/; // regex to get versionName
+const RE_versionName = /versionName=.*/; // regex to get versionName={version}
+const RE_version = /(?<=\=).*/; // regex to get version only
 
 const removeTrailingSpaces = (data) => {
     // make it into array
@@ -37,7 +38,7 @@ const generateCleanReport = (cleanData) => {
             getPKG = cleanData[i].match(RE_pkg)[0];
             pkgArr.push(getPKG);
         } else {
-            getVER = cleanData[i].match(RE_versionName)[0];
+            getVER = cleanData[i].match(RE_version)[0];
             verArr.push(getVER);
         }
     }

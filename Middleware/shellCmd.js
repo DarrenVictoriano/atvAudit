@@ -2,8 +2,6 @@
 require('dotenv').config();
 const shell = require('shelljs');
 const RE_removeTrailingSpaces = /^[\s]*(.*?)[\s]*$/; // regex to remove trail spaces
-const RE_pkg = /(?<=\[).* (?=\])/; // reges to get PKG
-const RE_versionName = /versionName=.*/; // regex to get versionName
 const REPORT_PATH = process.env.REPORTS_PATH;
 // REPORTS_PATH = "Reports/";
 

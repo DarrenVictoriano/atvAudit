@@ -49,7 +49,7 @@ const NavBar = (props) => {
 
         let appInfo = await axios.post("/api/audit/start", { "ip": IP });
         setAppInfoData(appInfo.data);
-        console.log(appInfo.data.currentData["android"]);
+
         if (appInfo) { setIsLoading(false) };
     }
 

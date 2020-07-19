@@ -4,12 +4,13 @@ import AppInfoData from './appInfoData';
 import LoadingSpinner from '../spinner/spinner';
 
 const AppInfo = (props) => {
-    const [isLoading, setIsLoading] = useContext(AdbContext);
+    const [adbData] = useContext(AdbContext);
 
     return (
         <div className="app-info container-fluid">
+            {adbData.data ? <AppInfoData /> : <LoadingSpinner />}
             {/* <LoadingSpinner /> */}
-            <AppInfoData />
+            {/* <AppInfoData /> */}
         </div>
 
     );

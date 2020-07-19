@@ -7,6 +7,7 @@ const ShellStream = (props) => {
     return (
         <span>
             {/* TODO: convert all hooks into state!! */}
+            {adbData.data}
         </span>
     );
 }

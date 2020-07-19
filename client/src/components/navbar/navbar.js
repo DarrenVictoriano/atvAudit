@@ -13,33 +13,52 @@ import { AdbContext } from '../../providers/adbContext';
 import axios from 'axios';
 
 const NavBar = (props) => {
-    // Context API, this serves as my global state
-    const [adbData, setAdbData] = useContext(AdbContext);
+    // Retirive ContentAPI
+    const { app_info, shell_stream, is_loading } = useContext(AdbContext);
+    const [appInfoData, setAppInfoData] = app_info;
+    const [shellStream, setShellStream] = shell_stream;
+    const [isLoading, setIsLoading] = is_loading;
 
     // this is for mobile view only
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
 
+    // enable button if IP exists
+    const [isDisable, setIsDisable] = useState(true);
+
     // Input Text state for IP Adress
     const [ipAddress, setIpAddress] = useState("");
 
     const handleShowDevices = async (e) => {
-
-        let data = await axios.get("/api/audit/startadb");
-        setAdbData({ "data": data.data.split("\n") });
-        console.log(data.data.split("\n"));
+        // I should probally clear the setShellStream
+        let streamList = await axios.get("/api/audit/startadb");
+        setShellStream(streamList.data.list);
     }
 
-    const handleConnectDevice = (e) => {
+    const handleConnectDevice = async (e) => {
+        // I should probally clear the setShellStream
         let IP = ipAddress;
 
+        let streamList = await axios.post("/api/audit/connect", { "ip": IP });
+        setShellStream(streamList.data.list);
     }
 
-    const handleStartAudit = (e) => {
+    const handleStartAudit = async (e) => {
         let IP = ipAddress;
+        setIsLoading(true);
+
+        let appInfo = await axios.post("/api/audit/start", { "ip": IP });
+        setAppInfoData(appInfo.data);
+        console.log(appInfo.data.currentData["android"]);
+        if (appInfo) { setIsLoading(false) };
     }
 
     const handleInputChange = (e) => {
+        if (e.target.value) {
+            setIsDisable(false);
+        } else {
+            setIsDisable(true)
+        }
         setIpAddress(e.target.value);
     }
 
@@ -54,12 +73,14 @@ const NavBar = (props) => {
                     <NavItem>
                         <InputGroup>
                             <InputGroupAddon addonType="prepend"><Button color="primary"
+                                disabled={isDisable}
                                 onClick={handleConnectDevice}>Connect</Button></InputGroupAddon>
 
                             <Input placeholder="IP Address or Device ID" size="50"
                                 value={ipAddress} onChange={handleInputChange} />
 
                             <InputGroupAddon addonType="append"><Button color="danger"
+                                disabled={isDisable}
                                 onClick={handleStartAudit}>Start Audit</Button></InputGroupAddon>
                         </InputGroup>
                     </NavItem>

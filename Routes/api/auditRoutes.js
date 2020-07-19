@@ -12,7 +12,7 @@ router.route("/connect")
     .post(auditController.connectAdbDevice);
 
 //@route        api/audit/audit
-router.route("/audit")
+router.route("/start")
     //  @desc-POST  start audit
     .post(auditController.startAudit);
 

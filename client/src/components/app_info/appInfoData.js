@@ -1,32 +1,52 @@
 import React, { useState, useContext } from 'react';
 import { AdbContext } from '../../providers/adbContext';
 import { Row, Col } from 'reactstrap';
+import './appInfoData.css';
 
 const AppInfoData = (props) => {
-    const [appInfo, setAppInfo] = useContext(AdbContext);
-    const pBG = "#ebf2ff"; // odd color picker
+    const { app_info } = useContext(AdbContext);
+    const [appInfoData] = app_info;
+
+    // appInfoData.SN
+    // appInfoData.currentData[pkg]
+    // appInfoData.currentData.packageList; // array
+
+    const oddBGPicker = (val) => {
+        // odd color picker
+        if (val % 2 == 0) {
+            return "";
+        } else {
+            return "oddBGColor";
+        }
+    }
+
+    const updateClass = (isUpdated) => {
+        if (isUpdated) {
+            return "text-danger font-weight-bold";
+        }
+    }
 
     return (
         <Row className="pb-5">
             <Col className="text-right p-0">
                 {/* Package Name */}
-                <p className="mb-0">
-                    <span className="mr-2" style={{ backgroundColor: "white" }}>com.android</span>
-                </p>
-
-                <p className="mb-0" style={{ backgroundColor: pBG }}>
-                    <span className="mr-2">com.android</span>
-                </p>
+                {appInfoData.currentData.packageList.map((pkg, i) => (
+                    <p className={"mb-0 " + (oddBGPicker(i)) + " " + (updateClass(appInfoData.currentData[pkg].updated))}>
+                        <span className={"mr-2 "}>
+                            {pkg}
+                        </span>
+                    </p>
+                ))}
             </Col>
             <Col className="text-left p-0">
                 {/* Version Name */}
-                <p className="mb-0">
-                    <span className="ml-2" style={{ backgroundColor: "white" }}>9</span>
-                </p>
-
-                <p className="mb-0" style={{ backgroundColor: pBG }}>
-                    <span className="ml-2">9</span>
-                </p>
+                {appInfoData.currentData.packageList.map((pkg, i) => (
+                    <p className={"mb-0 " + (oddBGPicker(i)) + " " + (updateClass(appInfoData.currentData[pkg].updated))}>
+                        <span className="ml-2">
+                            {appInfoData.currentData[pkg].versionName}
+                        </span>
+                    </p>
+                ))}
             </Col>
         </Row >
     );

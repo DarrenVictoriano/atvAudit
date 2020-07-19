@@ -2,19 +2,20 @@
 require('dotenv').config();
 const cmd = require('../Middleware/shellCmd');
 const reports = require('../Middleware/reportAssembler');
-const timeoutTime = 3000;
+const timeoutTime = 1000;
 const REPORT_PATH = process.env.REPORTS_PATH;
 // REPORTS_PATH = "Reports/";
 
 module.exports = {
     showConnectedDevices: (req, res) => {
         cmd.adbDevices((STDOUT) => {
-            res.status(200).json(STDOUT);
+
+            res.status(200).json({ "list": STDOUT.split("\n") });
         });
     },
     connectAdbDevice: (req, res) => {
         cmd.adbConnect(req.body.ip, (STDOUT) => {
-            res.status(200).json(STDOUT);
+            res.status(200).json({ "list": STDOUT.split("\n") });
         });
     },
     startAudit: (req, res) => {

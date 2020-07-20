@@ -27,28 +27,29 @@ const AppInfoData = (props) => {
     }
 
     return (
-        <Row className="pb-5">
-            <Col className="text-right p-0">
-                {/* Package Name */}
-                {appInfoData.currentData.packageList.map((pkg, i) => (
-                    <p className={"mb-0 " + (oddBGPicker(i)) + " " + (updateClass(appInfoData.currentData[pkg].updated))}>
-                        <span className={"mr-2 "}>
-                            {pkg}
-                        </span>
-                    </p>
-                ))}
-            </Col>
-            <Col className="text-left p-0">
-                {/* Version Name */}
-                {appInfoData.currentData.packageList.map((pkg, i) => (
-                    <p className={"mb-0 " + (oddBGPicker(i)) + " " + (updateClass(appInfoData.currentData[pkg].updated))}>
-                        <span className="ml-2">
-                            {appInfoData.currentData[pkg].versionName}
-                        </span>
-                    </p>
-                ))}
-            </Col>
-        </Row >
+        <div className="pb-5">
+            {appInfoData.currentData.packageList.map((pkg, i) => (
+                <Row>
+                    <Col className="text-right p-0">
+                        {/* Package Name */}
+                        <p className={"mb-0 " + (oddBGPicker(i)) + " " + (updateClass(appInfoData.currentData[pkg].updated))}>
+                            <span className={"mr-2 "}>
+                                {pkg}
+                            </span>
+                        </p>
+                    </Col>
+
+                    <Col className="text-left p-0">
+                        {/* Version Name */}
+                        <p className={"mb-0 " + (oddBGPicker(i)) + " " + (updateClass(appInfoData.currentData[pkg].updated))}>
+                            <span className="ml-2">
+                                {appInfoData.currentData[pkg].versionName}
+                            </span>
+                        </p>
+                    </Col>
+                </Row>
+            ))}
+        </div>
     );
 }
 

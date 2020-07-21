@@ -11,6 +11,7 @@ import {
 } from 'reactstrap';
 import { AdbContext } from '../../providers/adbContext';
 import axios from 'axios';
+import './nav.css'
 
 const NavBar = (props) => {
     // Retirive ContentAPI
@@ -65,7 +66,7 @@ const NavBar = (props) => {
     return (
         <div>
             <Navbar color="dark" dark expand="md">
-                <NavbarBrand>atvAudit</NavbarBrand>
+                <NavbarBrand><img className="audit-img" src="/audit.png"></img>atvAudit</NavbarBrand>
 
                 <Button color="info" onClick={handleShowDevices}>Show Connected Devices</Button>
 

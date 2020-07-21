@@ -24,7 +24,7 @@ const removeTrailingSpaces = (data) => {
 
 const generateCleanReport = (cleanData) => {
     // Allocate array and object for the new report to store into
-    let pkgSet = new Set(); // need a set to remove duplicates
+    let pkgArr = [] // need a set to remove duplicates
     let verArr = [];
     let PKGandVER = {};
 
@@ -36,16 +36,19 @@ const generateCleanReport = (cleanData) => {
 
         if (i % 2 == 0) {
             getPKG = cleanData[i].match(RE_pkg)[0];
-            pkgSet.add(getPKG);
+
+            // for some reason, there are pkg duplicate with different versions
+            // and its messing up my JSON, so here I am renaming the duplicates
+            if (pkgArr.includes(getPKG)) {
+                pkgArr.push(getPKG + ".default");
+            } else {
+                pkgArr.push(getPKG);
+            }
         } else {
             getVER = cleanData[i].match(RE_version)[0];
             verArr.push(getVER);
         }
     }
-
-    // its just all my codes are now using array so..
-    // convert set into an array
-    let pkgArr = Array.from(pkgSet);
 
     // combine both into a JSON
     for (i in pkgArr) {

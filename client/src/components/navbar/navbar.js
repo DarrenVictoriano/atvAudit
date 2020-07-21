@@ -32,26 +32,56 @@ const NavBar = (props) => {
 
     const handleShowDevices = async (e) => {
         // I should probally clear the setShellStream
+        // we set this to true to activate spinner
+        setIsLoading(true);
+
         let streamList = await axios.get("/api/audit/startadb");
+
+        // set the state value with the new data
         setShellStream(streamList.data.list);
+
+        // we set it back to false
+        // when we get the data back
+        if (streamList) {
+            setIsLoading(false)
+        };
     }
 
     const handleConnectDevice = async (e) => {
         // I should probally clear the setShellStream
         let IP = ipAddress;
 
+        // we set this to true to activate spinner
+        setIsLoading(true);
+
         let streamList = await axios.post("/api/audit/connect", { "ip": IP });
+
+        // set the state value with the new data
         setShellStream(streamList.data.list);
+
+        // we set it back to false
+        // when we get the data back
+        if (streamList) {
+            setIsLoading(false)
+        };
     }
 
     const handleStartAudit = async (e) => {
         let IP = ipAddress;
+
+        // we set this to true to activate spinner
         setIsLoading(true);
 
         let appInfo = await axios.post("/api/audit/start", { "ip": IP });
+
+        // set the state value with the new data
         setAppInfoData(appInfo.data);
 
-        if (appInfo) { setIsLoading(false) };
+        // we set it back to false
+        // when we get the data back
+        if (appInfo) {
+            setIsLoading(false)
+        };
     }
 
     const handleInputChange = (e) => {

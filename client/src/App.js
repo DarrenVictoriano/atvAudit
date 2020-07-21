@@ -9,7 +9,7 @@ const App = props => {
 
   return (
     <AdbProvider>
-      <div className="App">
+      <div className="App container-fliud">
         <header className="App-header">
           <Navbar />
         </header>

@@ -1,15 +1,14 @@
 import React, { useState, useContext } from 'react';
 import { AdbContext } from '../../providers/adbContext';
-import { Row, Col } from 'reactstrap';
 import './appInfoData.css';
 
 const AppInfoData = (props) => {
-    const { app_info } = useContext(AdbContext);
+    const { app_info, media_query } = useContext(AdbContext);
     const [appInfoData] = app_info;
 
-    // appInfoData.SN
-    // appInfoData.currentData[pkg]
-    // appInfoData.currentData.packageList; // array
+    // media
+    const isMobile = media_query;
+
 
     const oddBGPicker = (val) => {
         // odd color picker
@@ -27,27 +26,37 @@ const AppInfoData = (props) => {
     }
 
     return (
-        <div className="pb-5">
+        <div className="pb-5 px-0 container-fluid">
             {appInfoData.currentData.packageList.map((pkg, i) => (
-                <Row>
-                    <Col className="text-right p-0">
+                <div className="row">
+                    <div className={"col-sm p-0 " + (isMobile ? "text-left" : "text-right")}>
                         {/* Package Name */}
-                        <p className={"mb-0 " + (oddBGPicker(i)) + " " + (updateClass(appInfoData.currentData[pkg].updated))}>
-                            <span className={"mr-2 "}>
+                        <p className={"mb-0 "
+                            + (oddBGPicker(i))
+                            + " "
+                            + (updateClass(appInfoData.currentData[pkg].updated))
+                            + " "
+                            + (isMobile ? "text-mobile" : "")}>
+                            <span className={(isMobile ? "ml-2" : "mr-2")}>
                                 {pkg}
                             </span>
                         </p>
-                    </Col>
+                    </div>
 
-                    <Col className="text-left p-0">
+                    <div className={"col-sm p-0 " + (isMobile ? "text-right" : "text-left")}>
                         {/* Version Name */}
-                        <p className={"mb-0 " + (oddBGPicker(i)) + " " + (updateClass(appInfoData.currentData[pkg].updated))}>
-                            <span className="ml-2">
+                        <p className={"mb-0 "
+                            + (oddBGPicker(i))
+                            + " "
+                            + (updateClass(appInfoData.currentData[pkg].updated))
+                            + " "
+                            + (isMobile ? "text-mobile" : "")}>
+                            <span className={(isMobile ? "mr-2" : "ml-2")}>
                                 {appInfoData.currentData[pkg].versionName}
                             </span>
                         </p>
-                    </Col>
-                </Row>
+                    </div>
+                </div>
             ))}
         </div>
     );

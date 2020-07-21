@@ -1,0 +1,29 @@
+{
+  "name": "atvaudit",
+  "version": "1.0.0",
+  "description": "audit all package installed in the TV",
+  "main": "server.js",
+  "scripts": {
+    "start": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
+    "client": "cd client && npm run start",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install": "cd client && npm install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DarrenVictoriano/atvAudit.git"
+  },
+  "author": "Darren Vitoriano",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DarrenVictoriano/atvAudit/issues"
+  },
+  "homepage": "https://github.com/DarrenVictoriano/atvAudit#readme",
+  "dependencies": {
+    "concurrently": "^5.2.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.22",
+    "shelljs": "^0.8.4"
+  }
+}

@@ -1,0 +1,36 @@
+
+.App {
+  margin:0;
+  padding:0;
+  height:100%; /* needed for container min-height */
+  min-height: 100%;
+  min-width: 100%;
+  max-width: 100%;
+}
+
+.app-info {
+  min-height: 70%;
+  max-height: 70%;
+  position: fixed;
+  min-width: 100%;
+  max-width: 100%;
+  overflow-y: auto;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 0px;
+  font-size: 20px;
+}
+
+.shell_stream {
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  min-height: 25%;
+  max-height: 25%;
+  background:#282c34;
+  color:white;
+  padding: 10px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}

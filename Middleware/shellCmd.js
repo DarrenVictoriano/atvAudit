@@ -2,8 +2,8 @@
 require('dotenv').config();
 const shell = require('shelljs');
 const RE_removeTrailingSpaces = /^[\s]*(.*?)[\s]*$/; // regex to remove trail spaces
-const REPORT_PATH = process.env.REPORTS_PATH;
-// REPORTS_PATH = "Reports/";
+// const REPORT_PATH = process.env.REPORTS_PATH;
+const REPORT_PATH = "Reports/";
 
 const exec = (cmd, cb) => {
     // Execute a shell command

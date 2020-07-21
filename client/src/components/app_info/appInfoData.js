@@ -27,6 +27,12 @@ const AppInfoData = (props) => {
 
     return (
         <div className="pb-5 px-0 container-fluid">
+            {appInfoData.SN == "null"
+                ? <div></div>
+                : <div className="row title-row font-weight-bold">
+                    <div className={"col " + (isMobile ? "text-left" : "text-right")}>Package</div>
+                    <div className={"col " + (isMobile ? "text-right" : "text-left")}>Version</div>
+                </div>}
             {appInfoData.currentData.packageList.map((pkg, i) => (
                 <div className="row">
                     <div className={"col-sm p-0 " + (isMobile ? "text-left" : "text-right")}>

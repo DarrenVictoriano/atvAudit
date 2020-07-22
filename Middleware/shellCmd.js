@@ -97,7 +97,7 @@ module.exports = {
         // returns the version number as string via callback
 
         adbShellWithIP(ip, `dumpsys package packages | grep -E 'Package \\[|versionName' > ${REPORT_PATH}${fileName}-RAW.txt`, (data) => {
-            cb(fileName + ".txt");
+            cb(fileName + "-RAW.txt");
         });
     }
 }

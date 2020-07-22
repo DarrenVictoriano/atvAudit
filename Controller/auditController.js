@@ -9,12 +9,17 @@ const REPORT_PATH = process.env.REPORTS_PATH;
 module.exports = {
     showConnectedDevices: (req, res) => {
         cmd.adbDevices((STDOUT) => {
-
+            if (!STDOUT) {
+                res.status(400).json({ "error": "STDOUT is null, shell command fails" });
+            }
             res.status(200).json({ "list": STDOUT.split("\n") });
         });
     },
     connectAdbDevice: (req, res) => {
         cmd.adbConnect(req.body.ip, (STDOUT) => {
+            if (!STDOUT) {
+                res.status(400).json({ "error": "STDOUT is null, shell command fails" });
+            }
             res.status(200).json({ "list": STDOUT.split("\n") });
         });
     },
@@ -23,6 +28,10 @@ module.exports = {
 
         // get serialNumber so we can name the report after it
         cmd.getSerialNumber(ip_address, (SN) => {
+            // Handle error if we did not get SN
+            if (!SN) {
+                res.status(400).json({ "error": "Serial Number not recieved!" });
+            }
             // generate rawReport using ADB dumpsys
             cmd.generateRawReport(ip_address, SN, (data) => {
                 console.log("Data generated with filename: " + data);
@@ -37,9 +46,17 @@ module.exports = {
             // after 3 seconds
             // get TVs serial number this will be the filename of the report
             cmd.getSerialNumber(ip_address, (SN) => {
+                // Handle error if we did not get SN
+                if (!SN) {
+                    res.status(400).json({ "error": "Serial Number not recieved!" });
+                }
                 // now we need to clean the rawReport generated earlier
                 // the file path for the generated report will be the Reports/SerialNumber-RAW.txt
                 reports.cleanThenReadRawReport(REPORT_PATH + SN + "-RAW.txt", (currentData) => {
+                    // Error handling if currentData is undefined
+                    if (!currentData) {
+                        res.status(400).json({ "error": "cleaning generated raw file failed!" });
+                    }
                     // get all the package currently installed
                     // we need this later for comparison
                     let currentPackageList = currentData.packageList; // this is an array

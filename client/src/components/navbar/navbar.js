@@ -20,10 +20,6 @@ const NavBar = (props) => {
     const [shellStream, setShellStream] = shell_stream;
     const [isLoading, setIsLoading] = is_loading;
 
-    // this is for mobile view only
-    const [isOpen, setIsOpen] = useState(false);
-    const toggle = () => setIsOpen(!isOpen);
-
     // enable button if IP exists
     const [isDisable, setIsDisable] = useState(true);
 
@@ -96,7 +92,7 @@ const NavBar = (props) => {
     return (
         <div>
             <Navbar color="dark" dark expand="md">
-                <NavbarBrand><img className="audit-img" src="/audit.png"></img>atvAudit</NavbarBrand>
+                <NavbarBrand><img alt="atvAuto" className="audit-img" src="/audit.png"></img>atvAudit</NavbarBrand>
 
                 <Button color="info" onClick={handleShowDevices}>Show Connected Devices</Button>
 

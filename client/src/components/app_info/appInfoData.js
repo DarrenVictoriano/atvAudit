@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { AdbContext } from '../../providers/adbContext';
 import './appInfoData.css';
 
@@ -12,7 +12,7 @@ const AppInfoData = (props) => {
 
     const oddBGPicker = (val) => {
         // odd color picker
-        if (val % 2 == 0) {
+        if (val % 2 === 0) {
             return "";
         } else {
             return "oddBGColor";
@@ -27,7 +27,7 @@ const AppInfoData = (props) => {
 
     return (
         <div className="pb-5 px-0 container-fluid">
-            {appInfoData.SN == "null"
+            {appInfoData.SN === "null"
                 ? <div></div>
                 : <div className="row title-row font-weight-bold">
                     <div className={"col " + (isMobile ? "text-left" : "text-right")}>Package</div>
